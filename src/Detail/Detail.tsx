@@ -11,7 +11,7 @@ type DetailStateFetching = {
 };
 
 type DetailStateFetched = {
-  fetching: false;
+  fetching: boolean;
   extendedForecast: ExtendedForecast;
 };
 
