@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { AppBar, CssBaseline, Toolbar, Typography } from '@mui/material';
+import { Detail } from './Detail';
+import { Forecast } from './models';
+import { ListSearch } from './ListSearch';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface AppState {
+  forecasts: Forecast[];
+  selected?: Forecast;
 }
 
-export default App;
+export const App = () => {
+  const [state, setState] = useState<AppState>({
+    forecasts: [],
+  });
+
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div">
+            Weather App
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <div style={{ padding: '40px' }}>
+        <div style={{ marginBottom: 20 }}>
+          <ListSearch
+            selected={state.selected}
+            forecasts={state.forecasts}
+            onAdd={(f) =>
+              setState((s) => ({ ...s, forecasts: [...s.forecasts, f] }))
+            }
+            onRemove={(f) =>
+              setState((s) => ({
+                ...s,
+                forecasts: s.forecasts.filter(({ id }) => id !== f.id),
+              }))
+            }
+            onSelect={(selected) => setState({ ...state, selected })}
+          />
+        </div>
+
+        {state.selected ? <Detail {...state.selected} /> : null}
+      </div>
+    </div>
+  );
+};

@@ -1,0 +1,86 @@
+{
+  "extends": [
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
+  ],
+  "plugins": [
+    "unused-imports",
+    "prettier"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "rules": {
+    /**
+    remove unused imports with
+    --fix flag
+    */
+    "unused-imports/no-unused-imports-ts": 2,
+    "no-param-reassign": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react/require-default-props": [
+      "off"
+    ],
+    "linebreak-style": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/naming-convention": "off",
+    "arrow-body-style": "off",
+    /**
+      We want to allow prop spreading, this is mostly safe
+     */
+    "react/jsx-props-no-spreading": [
+      "off"
+    ],
+    /**
+      Disable this since it conflicts with prettier
+    */
+    "react/jsx-one-expression-per-line": [
+      "off"
+    ],
+    /**
+      We want to turn this off since template expressions are
+      implicitly strings as per our webpack config
+    */
+    "@typescript-eslint/restrict-template-expressions": [
+      "off"
+    ],
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "off"
+    ],
+    /**
+    strongly enforce prettier
+    */
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    /**
+    Disable this
+    */
+    "@typescript-eslint/no-floating-promises": 0,
+    "@typescript-eslint/no-unsafe-call": 0,
+    "@typescript-eslint/no-unsafe-member-access": 0,
+    "@typescript-eslint/no-unsafe-assignment": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "react/destructuring-assignment": 0,
+    /**
+      Throw an error if react hooks are not
+      correctly looking for the correct dependencies
+    */
+    "react-hooks/exhaustive-deps": [
+      "error"
+    ]
+  }
+}
