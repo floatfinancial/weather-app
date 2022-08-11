@@ -20,8 +20,14 @@ export const Search = ({ onAdd, ...rest }: SearchProps) => {
   const [value, setValue] = React.useState('');
   const [searching, setSearching] = React.useState(false);
   const [alert, setAlert] = React.useState<Partial<AlertProps>>();
+  const [showAlert, setShowAlert] = React.useState(false);
 
-  const onCloseSnackbar = () => setAlert(undefined);
+  const showSnackBar = (props: Partial<AlertProps>) => {
+    setAlert(props);
+    setShowAlert(true);
+  };
+
+  const hideSnackbar = () => setShowAlert(false);
 
   const onSearch = async (term: string) => {
     setSearching(true);
@@ -30,17 +36,20 @@ export const Search = ({ onAdd, ...rest }: SearchProps) => {
       if (city.cod === ResponseCode.GOOD) {
         onAdd(city);
         setValue('');
-        setAlert({
+        showSnackBar({
           severity: 'success',
           children: `${city.name}, ${city.sys.country} added!`,
         });
       } else if (city.cod === ResponseCode.NOT_FOUND) {
-        setAlert({ severity: 'error', children: `${term} not found` });
+        showSnackBar({ severity: 'error', children: `${term} not found` });
       } else if (city.cod === ResponseCode.BAD_KEY) {
-        setAlert({ severity: 'error', children: `Invalid API Key` });
+        showSnackBar({ severity: 'error', children: `Invalid API Key` });
       }
     } catch {
-      setAlert({ severity: 'error', children: `An unknown error occurred` });
+      showSnackBar({
+        severity: 'error',
+        children: `An unknown error occurred`,
+      });
     } finally {
       setSearching(false);
     }
@@ -64,12 +73,8 @@ export const Search = ({ onAdd, ...rest }: SearchProps) => {
           ),
         }}
       />
-      <Snackbar
-        autoHideDuration={5000}
-        onClose={onCloseSnackbar}
-        open={!!alert}
-      >
-        <Alert variant="filled" onClose={onCloseSnackbar} {...(alert || {})} />
+      <Snackbar autoHideDuration={5000} onClose={hideSnackbar} open={showAlert}>
+        <Alert variant="filled" onClose={hideSnackbar} {...(alert || {})} />
       </Snackbar>
     </>
   );
